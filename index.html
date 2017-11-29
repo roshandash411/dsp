@@ -16,7 +16,7 @@
 	</head>
 	<body>
 		<div class="container">
-			<div class="title">Feature Detection and Extraction using SURF</div>
+			<div class="title">Feature Detection and Extraction using SIFT</div>
 
 			<div class="authors">
 
@@ -35,7 +35,9 @@
 				<div class="text">
 
 					<!-- Start edit here  -->
-					This is the place where you have to write your abstract. Write a brief description about your work here. Mention the features that you have used in your work and their respective motivations.
+					The scale-invariant feature transform (SIFT) is an algorithm in computer vision to detect and describe local features in images. The algorithm was patented in Canada by the University of British Columbia and published by David Lowe in 1999.
+
+					Applications include object recognition, robotic mapping and navigation, image stitching, 3D modeling, gesture recognition, video tracking, individual identification of wildlife and match moving.
 					<!-- Stop edit here -->
 
 				</div>
@@ -46,7 +48,9 @@
 				<div class="text">
 
 					<!-- Start edit here  -->
-					Write a introduction to your project here.
+					Matching features across different images in a common problem in computer vision. When all images are similar in nature (same scale, orientation, etc) simple corner detectors can work. But when you have images of different scales and rotations, you need to use the Scale Invariant Feature Transform.
+					<img src="Pictures/example.png" width="500px"/>
+
 					<!-- Stop edit here -->
 
 				</div>
@@ -56,7 +60,22 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+						SIFT isn't just scale invariant. You can change the following, and still get good results:
+							<br>
+							1.Scale
+							<br>
+							2.Rotation
+							<br>
+							3.Illumination
+							<br>
+							4.Viewpoint
+							<br>
+							<br>
+							<br>
+							Here's an example. We're looking for these:
+							<img src="Pictures/sift-objects.jpg" alt="">
+							And we want to find these objects in this scene:
+							<img src="Pictures/sift-scene.jpg" alt="">
 						<!-- Stop edit here -->
 
 					</div>
@@ -67,8 +86,9 @@
 					<div class="image">
 
 						<!-- Start edit here  -->
-						Block diagram of the system. All images must be put in a Pictures folder. An example image
-						<img src="Pictures/example.png" alt="This text displays when the image is umavailable" width="300px" height=""/>
+						<br>
+						Here's the result:
+						<img src="Pictures/sift-result.jpg" alt="">
 						<!-- Stop edit here -->
 
 					</div>
@@ -78,7 +98,16 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+						Object recognition is widely used in the machine vision industry
+						for the purposes of inspection, registration, and manipulation.
+						However, current commercial systems for object
+						recognition depend almost exclusively on correlation-based
+						template matching. While very effective for certain engineered
+						environments, where object pose and illumination
+						are tightly controlled, template matching becomes computationally
+						infeasible when object rotation, scale, illumination,
+						and 3D pose are allowed to vary, and even more so when
+						dealing with partial visibility and large model databases.
 						<!-- Stop edit here -->
 
 					</div>
@@ -88,21 +117,32 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Describe your approach briefly here.
+						SIFT is quite an involved algorithm. It has a lot going on and can become confusing.
+						<br>
+ Here's an outline of what happens in SIFT.
+ <br>
+1.Constructing a scale space: This is the initial preparation. You create internal representations of the original image to ensure scale invariance. This is done by generating a "scale space".
+<br>
+2.LoG Approximation: The Laplacian of Gaussian is great for finding interesting points (or key points) in an image. But it's computationally expensive. So we cheat and approximate it using the representation created earlier.
+<br>
+3.Finding keypoints: With the super fast approximation, we now try to find key points. These are maxima and minima in the Difference of Gaussian image we calculate in step 2
+<br>
+4.Assigning an orientation to the keypoints An orientation is calculated for each key point. Any further calculations are done relative to this orientation. This effectively cancels out the effect of orientation, making it rotation invariant.
+<br>
+5.Generate SIFT features: Finally, with scale and rotation invariance in place, one more representation is generated. This helps uniquely identify features. Lets say you have 50,000 features. With this representation, you can easily identify the feature you're looking for (say, a particular eye, or a sign board).
+<br>
 						<!-- Stop edit here -->
 
 					</div>
 				</div>
-				<div class="subsection">
+				<!-- <div class="subsection">
 					<div class="heading">1.5 Report Organization</div>
 					<div class="text">
 
-						<!-- Start edit here  -->
-						Write something here.
-						<!-- Stop edit here -->
+
 
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 			<div class="section">
@@ -110,7 +150,11 @@
 				<div class="text">
 
 					<!-- Start edit here  -->
-					Write something here.
+					From the image above, it is obvious that we can’t use the same window to detect keypoints with different scale. It is OK with small corner. But to detect larger corners we need larger windows. For this, scale-space filtering is used. In it, Laplacian of Gaussian is found for the image with various σ  values. LoG acts as a blob detector which detects blobs in various sizes due to change in σ. In short, σ acts as a scaling parameter.
+But this LoG is a little costly, so SIFT algorithm uses Difference of Gaussians which is an approximation of LoG. Difference of Gaussian is obtained as the difference of Gaussian blurring of an image with two different σ, let it be σ and kσ. This process is done for different octaves of the image in Gaussian Pyramid. It is represented in below image:
+<img src="Pictures/sift_dog.jpg" alt="">
+Once this DoG are found, images are searched for local extrema over scale and space. For eg, one pixel in an image is compared with its 8 neighbours as well as 9 pixels in next scale and 9 pixels in previous scales. If it is a local extrema, it is a potential keypoint. It basically means that keypoint is best represented in that scale. It is shown in below image:
+<img src="Pictures/sift_local_extrema.jpg" alt="">
 					<!-- Stop edit here -->
 
 				</div>
@@ -119,21 +163,32 @@
 			<div class="section">
 				<div class="heading">3. Experiments &amp; Results</div>
 				<div class="subsection">
-					<div class="heading">3.1 Dataset Description</div>
+					<div class="heading">3.1 Discussion</div>
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
-						<!-- Stop edit here -->
-
-					</div>
-				</div>
-				<div class="subsection">
-					<div class="heading">3.2 Discussion</div>
-					<div class="text">
-
-						<!-- Start edit here  -->
-						Write something here.
+						1.Original image:
+						<br>
+						<img src="Pictures/1_original image.jpg" width="500px">
+						<br>
+						2.Scale Space and DoG level1
+						<img src="Pictures/2_scale space and DoG level 1.jpg" width="500px">
+						<br>
+						3.Scale Space and DoG level2
+						<img src="Pictures/3_scale space and DoG level 2.jpg" width="500px">
+						<br>
+						4.Scale Space and DoG level3
+						<img src="Pictures/4_scale space and DoG level 3.jpg" width="500px">
+						<br>
+						5.Scale Space and DoG level4
+						<img src="Pictures/5_scale space and DoG level 4.jpg" width="500px">
+						<br>
+						6.Keypoints before elimination
+						<img src="Pictures/6_kepoints_before_elimination.jpg" width="500px">
+						<br>
+						7.Keypoints after elimination
+						<img src="Pictures/7_kepoints_after_elimination.jpg" width="500px">
+						<br>
 						<!-- Stop edit here -->
 
 					</div>
@@ -147,7 +202,10 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+
+						SIFT was one of the pathbreaking discoveries in the field of computer vision as this was scale invariant. This proved to be a stepping stone for further research in the field of computer vision. Another algorithm called sift was later developed which had similar foundations but the time complexity was reduced drastically. Nowadays we have quite a lot of open source algorithms like ORB algortihms, but still they are not as good as SIFT and SURF.
+						<br>
+						Moreover the learning curve was quite steep and we learned a great deal about topics in computer vision and its signal processing applications.
 						<!-- Stop edit here -->
 
 					</div>
@@ -157,7 +215,7 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+						These algorithms can be used for applications like object tracking in videos, image segmentation, panaromic stitching, 3D scene modeling, recognition and tracking.
 						<!-- Stop edit here -->
 
 					</div>
